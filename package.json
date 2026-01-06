@@ -8,6 +8,9 @@
     "node": ">=20.0.0",
     "npm": ">=10.0.0"
   },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  },
   "scripts": {
     "dev": "tsx watch ./src/index.ts --host 0.0.0.0",
     "build": "node build.mjs",
@@ -15,7 +18,8 @@
     "drizzle-studio": "npx drizzle-kit studio --port=3000",
     "cli": "tsx ./src/scripts/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "better-auth-generate": "npx @better-auth/cli generate --config ./src/lib/auth/index.ts --output ./src/schema/auth.ts"
+    "better-auth-generate": "npx @better-auth/cli generate --config ./src/lib/auth/index.ts --output ./src/schema/auth.ts",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
@@ -56,6 +60,9 @@
     "@types/react-dom": "^19.2.3",
     "@types/swagger-jsdoc": "^6.0.4",
     "drizzle-kit": "^0.31.7",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "3.7.4",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.16",
     "tsx": "^4.21.0",
