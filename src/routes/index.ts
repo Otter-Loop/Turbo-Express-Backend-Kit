@@ -3,6 +3,7 @@ import { Environment } from "../utils/environment";
 import { apiReference } from "@scalar/express-api-reference";
 import staticRouter from "./static";
 import api from "./api";
+import testRouter from "./test";
 
 const router = express.Router();
 
@@ -31,5 +32,7 @@ router.get("/health", async (req, res) => {
 });
 
 /* your routes here */
+
+router.use("/test", testRouter.getRouter());
 
 export default router;
