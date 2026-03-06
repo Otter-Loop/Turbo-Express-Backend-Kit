@@ -15,10 +15,10 @@
     "dev": "tsx watch ./src/index.ts --host 0.0.0.0",
     "build": "node build.mjs",
     "start": "set NODE_ENV=production && node ./dist/index.js",
-    "drizzle-studio": "npx drizzle-kit studio --port=3000",
     "cli": "tsx ./src/scripts/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "better-auth-generate": "npx @better-auth/cli generate --config ./src/lib/auth/index.ts --output ./src/schema/auth.ts",
+    "auth:generate": "npx @better-auth/cli generate --config ./src/lib/auth/index.ts --output ./src/schema/auth.ts",
+    "db:studio": "npx drizzle-kit studio --port=3000",
     "prepare": "husky"
   },
   "keywords": [],
