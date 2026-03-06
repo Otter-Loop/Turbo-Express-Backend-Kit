@@ -1,37 +1,35 @@
-import { toNodeHandler } from "better-auth/node"
-import express from "express"
-import { auth } from "../lib/auth"
-import { Environment } from "../utils/environment"
-import swaggerSpec from "src/lib/docs/swagger.docs"
-import {apiReference} from "@scalar/express-api-reference";
-const api = express.Router()
+import express from "express";
+import { Environment } from "../utils/environment";
+import { apiReference } from "@scalar/express-api-reference";
+import staticRouter from "./static";
+import api from "./api";
 
-api.all("/auth/{*any}", toNodeHandler(auth))
+const router = express.Router();
 
+// api docs
+router.get(
+  "/docs",
+  apiReference({ url: "/static/public/openapi.json", title: "API Reference" }),
+);
 
-api.get("/openapi.json", (req, res)=>{
-  res.json(swaggerSpec)
-})
+// static files
+router.use("/static", staticRouter);
 
-api.get("/docs", apiReference({url: "/api/openapi.json"}))
+// api routes
+router.use("/api", api);
+
+// health check
+router.get("/health", async (req, res) => {
+  if (Environment.is_in_development) {
+    return res.json({
+      Environment,
+    });
+  }
+  return res.json({
+    message: "Backend kit is live.",
+  });
+});
 
 /* your routes here */
 
-
-/* ---------- */
-
-api.get("/health", async (req , res) => {
-  if(Environment.is_in_development){
-    return res.json(
-      {
-        Environment
-      }
-    )
-  }
-  return res.json({
-    message: "Backend kit is live."
-  })
-})
-
-
-export default api
+export default router;
