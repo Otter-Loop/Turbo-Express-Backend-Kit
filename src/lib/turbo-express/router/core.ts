@@ -1,12 +1,12 @@
-import { ZodObject, ZodRawShape, z, ZodError } from "zod";
-import {
+import { Router } from "express";
+import type {
   Request,
   Response,
   NextFunction,
-  Router,
   RequestHandler,
   Application,
 } from "express";
+import { ZodObject, type ZodRawShape, z, ZodError } from "zod";
 
 /**
  * Extended Request type with validated data

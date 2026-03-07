@@ -1,10 +1,13 @@
-import { ZodObject, ZodRawShape, z } from "zod";
-import { Request, Response, NextFunction, RequestHandler } from "express";
+import { ZodObject, type ZodRawShape, z } from "zod";
+import type { Request, Response, NextFunction, RequestHandler } from "express";
 import { AppError } from "../utils/error";
 
 // TODO: handle database and other system errors automatically
 
-type ValidatedRequest<T extends ZodObject<ZodRawShape>> = Omit<Request, 'validated'> & {
+type ValidatedRequest<T extends ZodObject<ZodRawShape>> = Omit<
+  Request,
+  "validated"
+> & {
   validated: z.infer<T>;
 };
 
@@ -13,8 +16,8 @@ export const inputValidationMiddleware = <T extends ZodObject<ZodRawShape>>(
   handler: (
     req: ValidatedRequest<T>,
     res: Response,
-    next: NextFunction
-  ) => void | Promise<void> | Promise<any>
+    next: NextFunction,
+  ) => void | Promise<void> | Promise<any>,
 ): RequestHandler => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -30,14 +33,16 @@ export const inputValidationMiddleware = <T extends ZodObject<ZodRawShape>>(
           message: "Validation failed",
           errors: parsed.error,
           schema: schema.toJSONSchema({
-            target: "openapi-3.0", unrepresentable: "any", override: (ctx) => {
+            target: "openapi-3.0",
+            unrepresentable: "any",
+            override: (ctx) => {
               const def = ctx.zodSchema._zod.def;
               if (def.type === "date") {
                 ctx.jsonSchema.type = "string";
                 ctx.jsonSchema.format = "date-time";
               }
             },
-          })
+          }),
         });
       }
 
@@ -54,15 +59,15 @@ export const inputValidationMiddleware = <T extends ZodObject<ZodRawShape>>(
       if (error instanceof AppError) {
         return res.status(error.statusCode).json({
           message: error.message,
-          ...(error.data && { data: error.data })  // Spread the data object
+          ...(error.data && { data: error.data }), // Spread the data object
         });
       }
 
-      console.log({ error })
+      console.log({ error });
 
       return res.status(500).json({
         message: "Failed Action",
-        error: error
+        error: error,
       });
     }
   };

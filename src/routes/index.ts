@@ -4,14 +4,19 @@ import { apiReference } from "@scalar/express-api-reference";
 import staticRouter from "./static";
 import api from "./api";
 import testRouter from "./test";
+import docsRouter from "./doc";
 
 const router = express.Router();
 
+// welcome
+router.get("/", async (req, res) => {
+  return res.json({
+    message: "Welcome to Turbo Express Backend Kit!",
+  });
+});
+
 // api docs
-router.get(
-  "/docs",
-  apiReference({ url: "/static/public/openapi.json", title: "API Reference" }),
-);
+router.use("/docs", docsRouter);
 
 // static files
 router.use("/static", staticRouter);
