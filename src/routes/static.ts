@@ -1,12 +1,13 @@
 import express from "express";
 import path from "path";
 import fs from "fs";
-import { authenticationMiddleware } from "src/middleware/authentication-middleware";
-import { roleMiddleware } from "src/middleware/role-middleware";
-import { softAuthMiddleware } from "src/middleware/soft-auth-middleware";
+import { authenticationMiddleware } from "../middleware/authentication-middleware";
+import { roleMiddleware } from "../middleware/role-middleware";
+import { softAuthMiddleware } from "../middleware/soft-auth-middleware";
 
 const staticRouter = express.Router({});
 
+// NOTE: Protected assets require authentication with admin role. You can modify the roleMiddleware to allow other roles as needed or your specific use case.
 staticRouter.use(
   "/protected",
   authenticationMiddleware,

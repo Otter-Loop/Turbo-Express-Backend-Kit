@@ -1,6 +1,5 @@
-import { createZodRouter } from "src/lib/turbo-express/router/core";
 import z from "zod";
-
+import { createZodRouter } from "../lib/turbo-express/router/core";
 const testRouter = createZodRouter();
 
 testRouter

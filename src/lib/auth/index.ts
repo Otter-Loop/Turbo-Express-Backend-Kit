@@ -41,7 +41,7 @@ export const auth = betterAuth({
       roles: roles,
     }),
     openAPI({
-      path: "/docs",
+      disableDefaultReference: true,
     }),
   ],
   advanced: {
