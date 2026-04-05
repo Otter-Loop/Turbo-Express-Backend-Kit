@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const openAPIJSON = swaggerJSDoc({
+const openAPIContract = swaggerJSDoc({
   definition: {
     openapi: "3.0.3",
     // NOTE: Update the info section to fit your application.
@@ -20,4 +20,4 @@ const openAPIJSON = swaggerJSDoc({
   apis: [path.join(__dirname, "**/*.swagger.ts")],
 });
 
-export default openAPIJSON;
+export default openAPIContract;

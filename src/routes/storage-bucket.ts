@@ -1,12 +1,13 @@
-import express from "express"
-import { authenticationMiddleware } from "../middleware/authentication-middleware"
-import { inputValidationMiddleware } from "../middleware/route-input-validation-middleware"
-import { bucket_folder, R2 } from "../services/object-storage"
-import { AppError } from "../utils/error"
-import z from "zod"
+import express from "express";
+import { authenticationMiddleware } from "../middleware/authentication-middleware";
+import { inputValidationMiddleware } from "../middleware/route-input-validation-middleware";
+import { bucket_folder, R2 } from "../services/object-storage";
 
-const r2Router = express.Router()
-r2Router.use(authenticationMiddleware)
+import z from "zod";
+import { AppError } from "../lib/turbo-express/lib/error";
+
+const r2Router = express.Router();
+r2Router.use(authenticationMiddleware);
 
 /**
  * @swagger
@@ -79,23 +80,23 @@ r2Router.post(
       body: z.object({
         fileName: z.string().min(2),
         fileCategory: z.enum(bucket_folder),
-        contentType: z.string()
-      })
+        contentType: z.string(),
+      }),
     }),
     async (req, res) => {
-      const body = req.validated.body
+      const body = req.validated.body;
       try {
         const { key, signedUrl } = await R2.getUploadSignedURL(
           body.fileCategory,
           body.fileName,
-          body.contentType
-        )
-        return res.json({ key, signedUrl })
+          body.contentType,
+        );
+        return res.json({ key, signedUrl });
       } catch (error) {
-        throw new AppError("Failed to get signed url", 409, { error })
+        throw new AppError("Failed to get signed url", 409, { error });
       }
-    }
-  )
-)
+    },
+  ),
+);
 
-export default r2Router
+export default r2Router;
